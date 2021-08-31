@@ -32,7 +32,19 @@
         </div>
 
         <!--ABOUT-->
-        
+        <div class="about-us-block">
+            <div id="about-us-section">
+                <div class="about-us-image">
+                    <img src="Images/about.jpeg" width="808" height="458" alt="Train Image">
+                </div>
+            
+                <div class="about-us-info">
+                    <h2>We are BOOK ME<sup>&trade;</sup></h2>
+                    <p>Sri Lanka is a fabulous place, safe, friendly and remarkably hassle-free. Taking the train is a great way to get around and a real cultural experience. Reserve train tickets with convenience and ease any time any were by just visit our online web service. Reservations can be made for selected trains of Srilanka railway and Blueline train.</p>
+                    <a href="#booking" title="About Us Button">BOOK NOW</a>
+                </div>
+            </div>
+        </div>
 
         <!--FOOTER-->
         <div class="footer">
