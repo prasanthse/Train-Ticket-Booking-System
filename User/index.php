@@ -70,20 +70,12 @@
 
                     <div class="elem-group inlined">
                         <label for="stationStart">From</label>
-                        <select id="stationStart" name="stationStart" required>
-                            <option value="Negombo" selected>Negombo</option>
-                            <option value="Kollupitiya">Kollupitiya</option>
-                            <option value="Moratuwa">Moratuwa</option>
-                        </select>
+                        <select id="stationStart" name="stationStart" required onchange="FilterStations(0)"></select>
                     </div>
 
                     <div class="elem-group inlined">
                         <label for="stationEnd">To</label>
-                        <select id="stationEnd" name="stationEnd" required>
-                            <option value="Kollupitiya" selected>Kollupitiya</option>
-                            <option value="Negombo">Negombo</option>
-                            <option value="Moratuwa">Moratuwa</option>
-                        </select>
+                        <select id="stationEnd" name="stationEnd" required onchange="FilterStations(1)"></select>
                     </div>
 
                     <div class="elem-group">
@@ -97,7 +89,7 @@
 
                     <div class="elem-group inlined">
                         <label for="seats">Seats</label>
-                        <select id="seats" name="seats" required onchange="CalculateCost(this.value);">
+                        <select id="seats" name="seats" required onchange="CalculateCost()">
                             <option value="1" selected>1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
