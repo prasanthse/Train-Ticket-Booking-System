@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Bookings</title>
+        <title>Stations</title>
         <link rel="stylesheet" href="Dashboard.css">
         <script src="Dashboard.js"></script>
     </head>
@@ -33,6 +33,20 @@
                 }
             }
 
+            // sql to create table
+            $sql = "CREATE TABLE stations (
+                id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                stationFrom VARCHAR(30) NOT NULL,
+                stationTo VARCHAR(30) NOT NULL,
+                km VARCHAR(3) NOT NULL
+            )";
+
+            if ($conn->query($sql) === TRUE) {
+                // echo "Table users created successfully";
+            } else {
+                // echo "Error creating table users: " . $conn->error;
+            }
+
             $uid = $_GET["userid"];
 
             $sql = "SELECT username FROM user WHERE id='$uid'";
@@ -50,44 +64,54 @@
                 }
             }
 
-            $sql = "SELECT * FROM bookings";
+            echo '<div class="bookingParent" id="booking">
+                <h1>ADD NEW STATIONS</h1>
+                <div class="booking">
+                    <form action="AddStation.php?userid=',urlencode($uid),'" method="post" id="stationForm" name="stationForm">
+                        <div class="elem-group">
+                            <label for="from">STATION FROM</label>
+                            <input type="text" id="from" name="from" placeholder="Colombo-Fort" required>
+                        </div>
+
+                        <div class="elem-group">
+                            <label for="to">STATION TO</label>
+                            <input type="text" id="to" name="to" placeholder="Negombo" required>
+                        </div>
+
+                        <div class="elem-group">
+                            <label for="km">Distance (KM)</label>
+                            <input type="text" id="km" name="km" placeholder="35" pattern="[0-9]{1,5}" required>
+                        </div>
+
+                        <button type="submit" class="BookingConfirm">Add</button>
+                    </form>
+                </div>
+            </div>';
+
+            $sql = "SELECT * FROM stations";
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
-                echo'<h1 class="tableTitle">BOOKINGS INFO</h1>
-                <div class="table-wrapper">
+                echo'<h1 class="tableTitle">STATIONS</h1>
+                <div class="table-wrapper" style="padding-bottom:50px">
                     <div class="scrollable">
                         <table class="responsive">
                             <tbody>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Telephone</th>
                                     <th>From</th>
                                     <th>To</th>
-                                    <th>Class</th>
-                                    <th>Seats</th>
-                                    <th>Amount</th>
-                                    <th>Date</th>
-                                    <th>Time</th>
+                                    <th>KM</th>
                                     <th>Action</th>
                                 </tr>';
 
                                 while($row = $result->fetch_assoc()){
                                     echo
                                     '<tr><td>'.$row["id"].'</td>
-                                    <td>'.$row["userName"].'</td>
-                                    <td>'.$row["email"].'</td>
-                                    <td>'.$row["phone"].'</td>
-                                    <td>'.$row["stationStart"].'</td>
-                                    <td>'.$row["stationEnd"].'</td>
-                                    <td>'.$row["visitorClass"].'</td>
-                                    <td>'.$row["seats"].'</td>
-                                    <td>'.$row["amount"].'</td>
-                                    <td>'.$row["checkInDate"].'</td>
-                                    <td>'.$row["checkInTime"].'</td>
-                                    <td><button class="btnTable btnTable-confirm" onclick="OpenBookingCancelModal('.$row["id"].')">Cancel</button></td>
+                                    <td>'.$row["stationFrom"].'</td>
+                                    <td>'.$row["stationTo"].'</td>
+                                    <td>'.$row["km"].'</td>
+                                    <td><button class="btnTable btnTable-confirm" onclick="OpenStationRemoveModal('.$row["id"].')">Remove</button></td>
                                     </tr>';
                                 }
                             echo'
@@ -95,9 +119,6 @@
                         </table>
                     </div>
                 </div>';
-            }
-            else{
-                echo "<h1 class='noData'>No bookings yet!</h1>";
             }
 
             echo'<div class="footer">
@@ -114,12 +135,12 @@
                 </div>
             </div>';
 
-            echo'<div id="bookingCancelModal" class="modal">
+            echo'<div id="stationRemoveModal" class="modal">
                 <div class="modal-content">
-                    <p>Are you sure to cancel the booking?</p>
+                    <p>Are you sure to remove the station?</p>
                     <div class="modal-buttons">
-                        <button class="btn btn-footer btn-cancel" onclick="CloseBookingCancelModal()">No</button>
-                        <button class="btn btn-footer btn-confirm" onclick="CancelBooking(',$uid,')">Yes</button>
+                        <button class="btn btn-footer btn-cancel" onclick="CloseStationRemoveModal()">No</button>
+                        <button class="btn btn-footer btn-confirm" onclick="RemoveStation(',$uid,')">Yes</button>
                     </div>
                 </div>
             </div>';
