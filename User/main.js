@@ -5,30 +5,44 @@ var stationFromID = 'stationStart';
 var stationEndID = 'stationEnd';
 var seatsID = 'seats';
 
-var stations = [
-  {text: 'Negombo', value: 'Negombo', selected: false},
-  {text: 'Moratuwa', value: 'Moratuwa', selected: false},
-  {text: 'Fort', value: 'Fort', selected: false},
-  {text: 'Chilaw', value: 'Chilaw', selected: false}
-];
+var stations = [];
+var station_distances = [];
 
-var station_distances = [
-  {from: 'Negombo', to: 'Moratuwa', km: 40},
-  {from: 'Negombo', to: 'Chilaw', km: 55},
-  {from: 'Negombo', to: 'Fort', km: 35},
-  {from: 'Moratuwa', to: 'Chilaw', km: 95},
-  {from: 'Moratuwa', to: 'Fort', km: 5},
-  {from: 'Fort', to: 'Chilaw', km: 90}
-];
+var tempStations = [];
 
 window.addEventListener('load', function() {
+  setTimeout(() => {
+    for(let i = 0; i < tempStations.length; i++){
+      stations.push({
+        from: tempStations[i], 
+        value: tempStations[i], 
+        selected: false
+      });
+    }
+
+    Init();
+  }, 2000);
+});
+
+function Init(){
   LoadStationsList(stationFromID, null, null);
 
   var selectBox = document.getElementById(stationFromID);
   var selectedValue = selectBox.options[selectBox.selectedIndex].value;
 
   LoadStationsList(stationEndID, stationFromID, selectedValue);
-});
+}
+
+function ReadStationsFromDatabase(stationFrom, stationTo, distance){
+  if(!tempStations.includes(stationFrom)) tempStations.push(stationFrom);
+  if(!tempStations.includes(stationTo)) tempStations.push(stationTo);
+
+  station_distances.push({
+    from: stationFrom, 
+    to: stationTo, 
+    km: parseInt(distance)
+  });
+}
 
 function TopNavToggle() {
   var x = document.getElementById("TopNavigationSection");
@@ -45,12 +59,18 @@ function CalculateCost() {
   var seats = seatBox.options[seatBox.selectedIndex].value;
 
   let km = FilterKm();
-  let chargeForOneSeat = km * pricePerKm;
-  chargeForOneSeat = chargeForOneSeat < minCharge ? minCharge : chargeForOneSeat;
 
-  let total = chargeForOneSeat * seats;
+  if(isNaN(km)){
+    document.getElementById("amount").value = "Not Available!";
+  }
+  else{
+    let chargeForOneSeat = km * pricePerKm;
+    chargeForOneSeat = chargeForOneSeat < minCharge ? minCharge : chargeForOneSeat;
 
-  document.getElementById("amount").value = "Rs." + total;
+    let total = chargeForOneSeat * seats;
+
+    document.getElementById("amount").value = "Rs." + total;
+  }
 }
 
 function LoadStationsList(selectionID1, selectionID2, neglectValue){
@@ -62,7 +82,7 @@ function LoadStationsList(selectionID1, selectionID2, neglectValue){
     
     if(neglectValue == option.value) continue;
 
-    selectBox.options.add( new Option(option.text, option.value, isSelect) );
+    selectBox.options.add( new Option(option.from, option.value, isSelect) );
 
     if(isSelect) isSelect = false;
   }
