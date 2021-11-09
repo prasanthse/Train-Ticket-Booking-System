@@ -11,6 +11,8 @@ var station_distances = [];
 var tempStations = [];
 
 window.addEventListener('load', function() {
+  HandleErrorMsg(false);
+
   setTimeout(() => {
     for(let i = 0; i < tempStations.length; i++){
       stations.push({
@@ -61,9 +63,12 @@ function CalculateCost() {
   let km = FilterKm();
 
   if(isNaN(km)){
+    HandleErrorMsg(true);
     document.getElementById("amount").value = "Not Available!";
   }
   else{
+    HandleErrorMsg(false);
+
     let chargeForOneSeat = km * pricePerKm;
     chargeForOneSeat = chargeForOneSeat < minCharge ? minCharge : chargeForOneSeat;
 
@@ -140,4 +145,17 @@ function FilterKm(){
       }
     }
   }
+}
+
+function HandleErrorMsg(status){
+  var msg = document.getElementById("errorMsg");
+  var btn = document.getElementById('bookingFormBtn');
+
+  if (status) {
+    msg.style.display = "block";
+  } else {
+    msg.style.display = "none";
+  }
+
+  btn.disabled = status;
 }

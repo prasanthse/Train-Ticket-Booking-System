@@ -120,15 +120,13 @@
                         <div class="elem-group inlined">
                             <label for="stationEnd">To</label>
                             <select id="stationEnd" name="stationEnd" required onchange="FilterStations(1)"></select>
-                        </div>';
+                        </div>
 
-                        if(true){
-                            echo'<div class="elem-group">
-                                <label for="phone"><small><strong style="color: red">Not Available!</strong></strong></label>
-                            </div>';
-                        }
-                        
-                        echo'<div class="elem-group">
+                        <div class="elem-group" id="errorMsg">
+                            <label for="phone"><small><strong style="color: red">Not Available!</strong></strong></label>
+                        </div>
+
+                        <div class="elem-group">
                             <label for="visitorClass">Class</label>
                             <select id="visitorClass" name="visitorClass" required>
                                 <option value="First Class" selected>First Class</option>
@@ -173,7 +171,7 @@
                             </select>
                         </div>
 
-                        <button type="submit" class="BookingConfirm">Book Now</button>
+                        <button type="submit" class="BookingConfirm" id="bookingFormBtn">Book Now</button>
                     </form>
                 </div>
             </div>';
